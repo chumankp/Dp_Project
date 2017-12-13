@@ -11,7 +11,7 @@ abstract public class TimeStampLazy implements Cloneable, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static TimeStampLazy instance;
+	private static volatile TimeStampLazy  instance;
 	// private static int count = 0;
 
 	private TimeStampLazy() {
@@ -19,7 +19,7 @@ abstract public class TimeStampLazy implements Cloneable, Serializable {
 		// don't remove this . it use in singleton object
 	}
 
-	public static TimeStampLazy getInstance() {
+	public static  TimeStampLazy getInstance() {
 		// double-checking
 		// if (count <= 3)
 		if (instance == null) {
@@ -39,7 +39,9 @@ abstract public class TimeStampLazy implements Cloneable, Serializable {
 
 	public Object readResolve() {
 		if (instance == null) {
-			instance = TimeStampLazy.getInstance();
+			instance = new TimeStampLazy() {
+			};
+			//instance = TimeStampLazy.getInstance();
 		}
 		return instance;
 
